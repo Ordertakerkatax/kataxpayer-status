@@ -1,7 +1,11 @@
 # Where BIR advisories come from (Phase 0 discovery)
 
-Checked 2 November 2026 from a headless Chromium, as spec §8 asks. **For Emel to approve
-before the watcher is built on it.**
+Checked 2 November 2026 from a headless Chromium, as spec §8 asks.
+
+**Decided 2 November 2026 (Emel): option A.** The watcher reads the rendered home page with a
+headless browser, as described under "How the watcher will run". The admin's manual form is
+the backstop when it misses something. A request to the BIR for a proper feed may follow; if
+it is granted, only the list-reading step changes.
 
 ## Short version
 

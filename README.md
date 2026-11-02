@@ -32,4 +32,6 @@ Two things that bite:
 - **Phase 0 done:** app shell, header with Manila time, disclaimer strip and footer on every
   page, `robots.txt`, `.env.example`, and the advisory source write-up in `docs/bir-source.md`.
 - **The watcher's source needs Emel's approval** before Phase 3: see `docs/bir-source.md`.
+- **Advisory source decided:** option A, the rendered home page (`docs/bir-source.md`).
+- **The board will be a live report stream:** brief in `docs/board-motion.md`, built in Phase 2.
 - Phases 1 to 5 are not started. The board cards are a placeholder.
