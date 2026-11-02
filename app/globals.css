@@ -1,26 +1,94 @@
 @import "tailwindcss";
+/* Generated from design/tokens.json — never hand-edit. It also defines a global
+   class per type style (hero, display-1..3, price, body, body-lg, body-sm,
+   caption, eyebrow, label, button, price-note); those names are reserved. */
+@import "./tokens.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* Tailwind reads the brand tokens, so `bg-surface-page`, `text-brand-600` and
+   the rest always resolve to the published design system. */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface-page: var(--surface-page);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-brand: var(--surface-brand);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-inverse: var(--ink-inverse);
+  --color-ink-on-gold: var(--ink-on-gold);
+  --color-brand-900: var(--brand-900);
+  --color-brand-800: var(--brand-800);
+  --color-brand-700: var(--brand-700);
+  --color-brand-600: var(--brand-600);
+  --color-gold: var(--gold);
+  --color-gold-deep: var(--gold-deep);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-focus: var(--focus);
+  --color-success: var(--success);
+  --color-on-success: var(--on-success);
+  --color-warning: var(--warning);
+  --color-on-warning: var(--on-warning);
+  --color-danger: var(--danger);
+  --color-on-danger: var(--on-danger);
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Base rules live in the base layer. Outside any layer they would outrank every
+   Tailwind utility, and `text-ink-inverse` on a header link silently lost to
+   `a { color }` — dark green links on the green bar. */
+@layer base {
+  html {
+    background: var(--surface-page);
+  }
+
+  body {
+    background: var(--surface-page);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Sentence case at 800, as on kataxpayer.com. Jakarta has real descenders,
+     so no line-height below 1.14x. */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.18;
+  }
+
+  a {
+    color: var(--brand-600);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.skip-link {
+  position: absolute;
+  left: -9999px;
+}
+.skip-link:focus {
+  left: 16px;
+  top: 16px;
+  z-index: 50;
+  background: var(--surface-raised);
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }

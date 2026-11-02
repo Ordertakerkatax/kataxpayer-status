@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BIR Filing Status Board — status.kataxpayer.com
 
-## Getting Started
+"Can I file right now?" for eFPS and eBIRForms, from community reports and BIR advisories.
+Free, unofficial, and it says so on every page. The spec is Version 1, November 2026.
 
-First, run the development server:
+Separate repo and separate Vercel project from kataxpayer.com. No git remote yet.
+
+## Commands
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev                      # localhost:3000
+npm run build                    # run before saying something works
+node scripts/tokens-to-css.mjs   # regenerate app/tokens.css from design/tokens.json
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Styling
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+`design/tokens.json` is a copy of the published KaTaxpayer design system, the same file
+kataxpayer.com uses. `app/tokens.css` is generated from it: never hand-edit. Tailwind reads
+the tokens through `@theme inline` in `app/globals.css`, so `bg-surface-brand`,
+`text-ink-muted` and the rest are the brand's colours.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Two things that bite:
 
-## Learn More
+- `tokens.css` defines a global class per type style (`hero`, `display-1`..`3`, `price`,
+  `body`, `body-lg`, `body-sm`, `caption`, `eyebrow`, `label`, `button`, `price-note`). Those
+  names are reserved; do not use them for layout.
+- Base element rules stay inside `@layer base`. Unlayered, they beat every Tailwind utility.
 
-To learn more about Next.js, take a look at the following resources:
+## Where things stand
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Phase 0 done:** app shell, header with Manila time, disclaimer strip and footer on every
+  page, `robots.txt`, `.env.example`, and the advisory source write-up in `docs/bir-source.md`.
+- **The watcher's source needs Emel's approval** before Phase 3: see `docs/bir-source.md`.
+- Phases 1 to 5 are not started. The board cards are a placeholder.
