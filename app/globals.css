@@ -65,6 +65,13 @@
     color: var(--brand-600);
   }
 
+  /* A link inside a sentence is underlined, so colour is not the only thing
+     that tells it from the words around it (Lighthouse link-in-text-block). */
+  :where(p, li, dd) a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
   :focus-visible {
     outline: 3px solid var(--focus);
     outline-offset: 2px;
@@ -82,6 +89,263 @@
   background: var(--surface-raised);
   padding: 8px 12px;
   border-radius: var(--radius-md);
+}
+
+/* Board ---------------------------------------------------------------------- */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  background: var(--brand-600);
+  color: var(--ink-inverse);
+  font-weight: 700;
+  font-size: 1rem;
+  border: 0;
+  cursor: pointer;
+}
+.btn-primary:hover {
+  background: var(--brand-700);
+}
+.btn-primary:disabled {
+  background: var(--border-strong);
+  cursor: not-allowed;
+}
+.btn-quiet {
+  background: none;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 6px 12px;
+  color: var(--ink);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* The card's left edge carries the state's colour; the icon's shape and the
+   headline's words carry it too. */
+.status-card {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-left: 6px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-sm);
+  padding: 20px;
+  transition: border-color 400ms ease;
+}
+.status-card[data-state='up'] { border-left-color: var(--success); }
+.status-card[data-state='issues'] { border-left-color: var(--warning); }
+.status-card[data-state='down'],
+.status-card[data-state='official_down'] { border-left-color: var(--danger); }
+
+.state-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.card-facts {
+  display: grid;
+  gap: 6px;
+  margin: 14px 0 16px;
+  font-size: 0.9375rem;
+}
+.card-facts > div {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 8px;
+}
+.card-facts dt {
+  color: var(--ink-muted);
+}
+.card-facts dd {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.timeline-strip {
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.timeline-slice {
+  fill: transparent;
+}
+.timeline-slice:hover,
+.timeline-slice.is-selected {
+  fill: var(--border);
+}
+.timeline-axis {
+  stroke: var(--border-strong);
+  stroke-width: 1;
+}
+.timeline-band {
+  fill: var(--danger);
+  fill-opacity: 0.12;
+}
+.timeline-dot circle,
+.timeline-dot text {
+  pointer-events: none;
+}
+.dot-ok {
+  fill: var(--surface-raised);
+  stroke: var(--success);
+  stroke-width: 1.75;
+}
+.dot-fail {
+  fill: var(--danger);
+}
+.dot-you {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+.dot-you-label {
+  fill: var(--ink);
+  font-size: 11px;
+  font-weight: 700;
+}
+.timeline-empty {
+  fill: var(--ink-muted);
+  font-size: 13px;
+}
+
+.what-to-do {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  border-left: 6px solid var(--gold);
+  background: var(--surface-raised);
+  padding: 20px;
+}
+.prose-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+.prose-block ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.advisory-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.advisory-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  overflow-wrap: anywhere;
+}
+
+/* The report dialog. Nothing inside it moves while somebody fills it in. */
+.report-dialog {
+  width: min(32rem, calc(100% - 32px));
+  max-height: calc(100% - 32px);
+  margin: auto;
+  padding: 20px;
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: var(--surface-raised);
+  color: var(--ink);
+  box-shadow: var(--shadow-lg);
+}
+.report-dialog::backdrop {
+  background: rgba(10, 30, 22, 0.55);
+}
+.field-label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.choice-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.choice {
+  position: relative;
+  display: flex;
+}
+.choice input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  cursor: pointer;
+}
+.choice span {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 8px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  text-align: center;
+}
+.choice input:checked + span {
+  border-color: var(--brand-600);
+  background: var(--brand-600);
+  color: var(--ink-inverse);
+}
+.choice input:focus-visible + span {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+.field {
+  min-height: 48px;
+  padding: 8px 12px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-raised);
+  color: var(--ink);
+  font: inherit;
+}
+
+/* Motion --------------------------------------------------------------------
+   Everything on the board that moves is here. Inside no-preference only, and
+   the reduce rule below turns off anything that slips through. */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* The strip slides: each five-second redraw eases to the new position. */
+  .timeline-dot circle,
+  .timeline-dot text {
+    transition: cx 5s linear, x 5s linear;
+  }
+  /* A report that arrived since the last poll drops in from its side. */
+  .timeline-dot.is-fresh {
+    animation: dot-drop 520ms cubic-bezier(0.2, 0.8, 0.3, 1.2) both;
+    transform-box: fill-box;
+  }
+  /* The headline cross-fades when the state changes. */
+  .state-line.is-changed {
+    animation: state-in 280ms ease-out both;
+  }
+}
+
+@keyframes dot-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+}
+@keyframes state-in {
+  from {
+    opacity: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

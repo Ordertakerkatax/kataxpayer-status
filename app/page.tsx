@@ -1,29 +1,16 @@
-import { SYSTEMS } from '@/lib/catalogue';
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+import { Board } from '@/components/board';
+import { getBoard } from '@/lib/board';
+import { renderMarkdown } from '@/lib/markdown';
 
-/**
- * Phase 0 placeholder. The live board, the report flow and the advisories list
- * arrive in Phase 2, once the database exists. Until then each card says so
- * plainly rather than showing a state nobody has reported.
- */
-export default function Home() {
-  return (
-    <div className="flex flex-col gap-8">
-      <h1 className="text-3xl sm:text-4xl">Is eFPS or eBIRForms working right now?</h1>
-      <div className="grid gap-4 md:grid-cols-2">
-        {SYSTEMS.map((s) => (
-          <section
-            key={s.key}
-            aria-labelledby={`sys-${s.key}`}
-            className="rounded-lg border border-border bg-surface-raised p-6 shadow-[var(--shadow-sm)]"
-          >
-            <h2 id={`sys-${s.key}`} className="text-2xl">
-              {s.label}
-            </h2>
-            <p className="mt-2 font-semibold">Not enough reports</p>
-            <p className="text-ink-muted text-sm">The board starts counting reports at launch.</p>
-          </section>
-        ))}
-      </div>
-    </div>
-  );
+// The board is the current state of the world or it is wrong.
+export const dynamic = 'force-dynamic';
+
+export default async function Home() {
+  const [board, whatToDo] = await Promise.all([
+    getBoard(),
+    readFile(path.join(process.cwd(), 'content', 'what-to-do.md'), 'utf8'),
+  ]);
+  return <Board initial={board} whatToDo={renderMarkdown(whatToDo)} />;
 }

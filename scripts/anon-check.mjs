@@ -46,6 +46,14 @@ const checks = [
     refused,
   ],
   ['compute_status: not callable', await post('rpc/compute_status', {}), (r) => r.status >= 400],
+  [
+    'submit_report: not callable',
+    await post('rpc/submit_report', {
+      p_system_key: 'efps', p_outcome: 'ok', p_failure_type: null, p_form_code: null,
+      p_device_hash: 'x', p_ip_hash: 'x',
+    }),
+    refused,
+  ],
   ['v_live_status: readable', await get('v_live_status?select=*'), (r) => r.status === 200],
   ['v_recent_breakdown: readable', await get('v_recent_breakdown?select=*'), (r) => r.status === 200],
   ['v_public_advisories: readable', await get('v_public_advisories?select=*'), (r) => r.status === 200],
