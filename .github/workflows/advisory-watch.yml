@@ -2,7 +2,10 @@
 # page's advisory list in headless Chromium and post it to the sync route,
 # which stores new system advisories as pending for the admin.
 #
-# Needs the repository secret CRON_SECRET, the same value Vercel holds.
+# Needs the repository secret CRON_SECRET, the same value Vercel holds. The
+# repository variable SYNC_URL can point the watcher elsewhere (the Vercel
+# address while the status.kataxpayer.com DNS record is pending); unset, it
+# uses production.
 # A run that reads no items, or that the route does not answer with 200,
 # fails, so a change on the BIR's side shows up as a red run.
 
@@ -48,7 +51,7 @@ jobs:
 
       - name: Read the BIR list and sync
         env:
-          SYNC_URL: https://status.kataxpayer.com/api/advisories/sync
+          SYNC_URL: ${{ vars.SYNC_URL || 'https://status.kataxpayer.com/api/advisories/sync' }}
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
           BIR_USER_AGENT: KaTaxpayerStatusBot/1.0 (+https://status.kataxpayer.com/about)
         run: node watch.mjs
