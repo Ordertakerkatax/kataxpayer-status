@@ -264,7 +264,7 @@ export function ReportDialog({ onReported }: Props) {
               Send my report
             </button>
             <p className="text-xs text-ink-muted">
-              No name, TIN or contact details. See <a href="/about">how reports are kept</a>.
+              No name, TIN or contact details. See <a href="/about#privacy">how reports are kept</a>.
             </p>
           </form>
         )}

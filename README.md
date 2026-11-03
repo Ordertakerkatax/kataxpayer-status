@@ -128,6 +128,26 @@ Local ports are 553xx, not Supabase's default 543xx, because another local proje
 - Locally, `supabase/config.toml` allows 30 auth e-mails an hour instead of 2, so sign-in can be
   tested more than twice. Production's limit is set in the hosted project.
 
+## History, advisories and about
+
+- **`/history`** reads `v_monthly_availability` for the active systems only (the view also
+  covers inactive and test systems). Two charts, official and community, never one blended
+  figure; bars start at zero. The table under them is the accessible version and carries every
+  number. `/history/export?year=` is the same table as CSV, built with `lib/csv.ts` (the
+  formula guard from kataxpayer.com).
+- **Chart colours** are `--series-0` and `--series-1` in `app/globals.css`, checked with the
+  dataviz validator: `#0a7d55` and `#d9a20d` pass on white. `brand-600` failed the chroma check
+  (it reads as grey in a bar), and the status colours are not used because a system is an
+  identity, not a state.
+- **`supabase/tests/database/history.test.sql`** is the Phase 4 check: one seeded month with the
+  hand calculation written beside each assertion (97.36% official, 57.14% community over 7
+  hours, and the October share of a cross-month outage).
+- **`/advisories`** filters with a plain GET form (system, year) plus `month` from a history row.
+- **`/about`** states the thresholds by reading `settings`, so it cannot drift from the board.
+  Its privacy notice is `content/privacy.md`, placeholder until Emel approves it, and the
+  question address is `PRIVACY_EMAIL` in `lib/site.ts`, null (the page points to kataxpayer.com)
+  until one is chosen.
+
 ## Styling
 
 `design/tokens.json` is a copy of the published KaTaxpayer design system, the same file
@@ -155,4 +175,6 @@ Two things that bite:
   The dialog links `/about`, which arrives in Phase 4.
 - **Phase 3 done** (locally): parser and its tests, the sync route, the GitHub Actions watcher
   (written, not yet run on GitHub: the repo has no remote), and `/admin`.
-- Phases 4 and 5 are not started.
+- **Phase 4 done** (locally): `/history` with charts and CSV, `/advisories`, `/about`. Awaiting
+  Emel: `content/privacy.md` wording and a privacy contact address.
+- Phase 5, launch, is not started.

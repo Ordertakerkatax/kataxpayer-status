@@ -1,9 +1,9 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  // The home page reads content/what-to-do.md at request time; make sure the
-  // file ships with the function on Vercel.
-  outputFileTracingIncludes: { '/': ['./content/**'] },
+  // The home page and /about read content/*.md at request time; make sure the
+  // files ship with their functions on Vercel.
+  outputFileTracingIncludes: { '/': ['./content/**'], '/about': ['./content/**'] },
 };
 
 export default nextConfig;

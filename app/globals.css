@@ -315,6 +315,153 @@
   font: inherit;
 }
 
+/* History and advisories ------------------------------------------------------ */
+
+/* Chart series, validated with the dataviz checker (3 Nov 2026): fixed order,
+   the first active system gets series-0. Not the status colours: a system is
+   an identity, not a state. */
+:root {
+  --series-0: #0a7d55;
+  --series-1: #d9a20d;
+}
+.series-0 { background: var(--series-0); }
+.series-1 { background: var(--series-1); }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 6px 14px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: none;
+}
+.chip[aria-current='page'] {
+  background: var(--brand-600);
+  border-color: var(--brand-600);
+  color: var(--ink-inverse);
+}
+
+.avail-chart {
+  min-width: 0;
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-raised);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.avail-legend {
+  display: flex;
+  gap: 14px;
+  font-size: 0.875rem;
+}
+.avail-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.avail-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+.avail-plot {
+  position: relative;
+  height: 180px;
+  margin: 8px 0 22px 36px;
+}
+.avail-grid span {
+  position: absolute;
+  left: -36px;
+  right: 0;
+  transform: translateY(50%);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.6875rem;
+  color: var(--ink-muted);
+  line-height: 0;
+  padding-bottom: 0;
+}
+.avail-bars {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-around;
+  gap: 4px;
+}
+.avail-month {
+  position: relative;
+  flex: 1 1 0;
+  max-width: 64px;
+  display: flex;
+  justify-content: center;
+}
+.avail-pair {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2px;
+}
+.avail-bar {
+  flex: 0 1 18px;
+  min-width: 4px;
+  border-radius: 4px 4px 0 0;
+}
+.avail-bar.is-empty {
+  height: 6px;
+  border: 1.5px dashed var(--border-strong);
+  border-bottom: 0;
+  background: none;
+}
+.avail-month-label {
+  position: absolute;
+  bottom: -20px;
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+}
+
+.table-scroll {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-raised);
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+.data-table th,
+.data-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.data-table thead th {
+  font-size: 0.8125rem;
+  color: var(--ink-muted);
+  background: var(--surface-sunken);
+}
+.data-table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
 /* Admin ---------------------------------------------------------------------- */
 
 .admin-card {

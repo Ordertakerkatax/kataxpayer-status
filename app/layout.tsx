@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Logo } from '@/components/logo';
 import { ManilaClock } from '@/components/manila-clock';
-import { DISCLAIMER, MAIN_SITE_URL, NAV_LINKS, SITE_URL } from '@/lib/site';
+import { SiteNav } from '@/components/site-nav';
+import { DISCLAIMER, MAIN_SITE_URL, SITE_URL } from '@/lib/site';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -44,17 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Logo size={36} />
               <span className="font-extrabold text-lg leading-tight">Can I file right now?</span>
             </Link>
-            <nav aria-label="Main" className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
-              {NAV_LINKS.map((l) => (
-                <Link
-                  key={l.href}
-                  href={l.href}
-                  className="text-ink-inverse underline-offset-4 hover:underline"
-                >
-                  {l.label}
-                </Link>
-              ))}
-            </nav>
+            <SiteNav />
             <p className="sm:ml-auto text-sm opacity-90">
               <ManilaClock />
             </p>

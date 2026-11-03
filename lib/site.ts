@@ -21,3 +21,10 @@ export const NAV_LINKS = [
   { href: '/advisories', label: 'Advisories' },
   { href: '/about', label: 'About' },
 ] as const;
+
+/**
+ * Where privacy questions go, under the Data Privacy Act. Not decided yet:
+ * while it is null the about page sends readers to kataxpayer.com instead of
+ * printing a guessed address. Emel to fill in.
+ */
+export const PRIVACY_EMAIL: string | null = null;
