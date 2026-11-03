@@ -1,0 +1,54 @@
+# The BIR advisory watcher (spec §8). Every 30 minutes, read the BIR home
+# page's advisory list in headless Chromium and post it to the sync route,
+# which stores new system advisories as pending for the admin.
+#
+# Needs the repository secret CRON_SECRET, the same value Vercel holds.
+# A run that reads no items, or that the route does not answer with 200,
+# fails, so a change on the BIR's side shows up as a red run.
+
+name: Advisory watch
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: advisory-watch
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: watcher
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: watcher/package-lock.json
+
+      - run: npm ci
+
+      - name: Cache Chromium
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ hashFiles('watcher/package-lock.json') }}
+
+      - run: npx playwright install --with-deps chromium
+
+      - name: Read the BIR list and sync
+        env:
+          SYNC_URL: https://status.kataxpayer.com/api/advisories/sync
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          BIR_USER_AGENT: KaTaxpayerStatusBot/1.0 (+https://status.kataxpayer.com/about)
+        run: node watch.mjs

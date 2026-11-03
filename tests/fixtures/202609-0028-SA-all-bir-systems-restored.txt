@@ -1,0 +1,30 @@
+REPUBLIC OF THE PHILIPPINES
+DEPARTMENT OF FINANCE
+BUREAU OF INTERNAL REVENUE
+Information Systems Group
+Bringing In Revenues
+for Nation-Building
+F1
+Duplicate copy
+(Note: The original copy of this Advisory will not include the approvals/signature.
+NMTSD/RDC Service Desk Analyst to ensure that the duplicate and original copies
+are one and the same before posting)
+REFERENCE NO: 202609-0028-SA
+DATE September 21, 2026
+TO All Internal and External users
+SYSTEM/S AFFECTED All BIR Systems and BIR network, except the ff. systems:
+ EIS – Taxpayer Portal, Certification Portal and API
+Transmission Service (Advisory No. 202609-0029-SU)
+ Accounts Receivable Management System (ARMS)
+(Advisory No. 202609-0030-SU)
+REASON Security solution maintenance was completed successfully,
+pursuant to Advisory No. 202609-0028-SU
+DATE APPLICATION
+SYSTEMS ARE UP/
+AVAILABLE
+September 19, 2026 (Saturday) 03:40PM
+Kindly disseminate this information to all concerned.
+Thank you.
+ISG Management
+---------------------------------------------------------------------------------------------------------------------
+ADVISORY

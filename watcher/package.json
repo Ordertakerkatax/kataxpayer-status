@@ -1,0 +1,12 @@
+{
+  "name": "kataxpayer-status-watcher",
+  "private": true,
+  "type": "module",
+  "description": "Reads the BIR home page's advisory list and posts it to /api/advisories/sync. Run by .github/workflows/advisory-watch.yml.",
+  "scripts": {
+    "watch": "node watch.mjs"
+  },
+  "dependencies": {
+    "playwright": "1.64.1"
+  }
+}

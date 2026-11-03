@@ -124,8 +124,26 @@ DATE APPLICATION SYSTEMS ARE UP / AVAILABLE    October 27, 2026 (Tuesday) 10:00 
 4. The route filters, skips URLs already stored, downloads new PDFs from `bir-cdn` itself, parses
    them and saves them as `pending` (spec §8, steps 2 to 6).
 
-The route also accepts a call with no list, for a hand-triggered run of the parse step only. If
-the BIR ever opens the CMS API or publishes an RSS feed, only step 2 changes.
+If the BIR ever opens the CMS API or publishes an RSS feed, only step 2 changes.
+
+## As built (Phase 3, 3 November 2026)
+
+- `watcher/watch.mjs` is the Action's script; `DRY_RUN=1 node watch.mjs` prints what it reads.
+  The first run read 113 links from the page (auction notices and quick links included); the
+  route's title filter kept the 8 system advisories.
+- **The text unpdf extracts is not the PDF's layout.** A value can come before its label
+  (`…5:00 PMStart Date / Time`), the closing lines can come before the fields, and one PDF
+  carries a signed "duplicate copy" of itself. So the parser reads dates by position after
+  `PERIOD COVERED` (first two: start, end) or `DATE APPLICATION` (the restoration time), and
+  times in every form seen: `5:00 pm`, `/5:00 PM`, `- 5:00 PM`, `/ 04:00 PM`, `– 3:19 AM`, `03:40PM`.
+- **The "TO" field varies more than the spec allowed for.** Read as external: anything naming
+  external users, "All Users" and "Taxpayers". Read as internal: "Internal users" alone and "BIR
+  Users". Anything else is unknown, which the board ignores.
+- **"All BIR Systems"** marks both eFPS and eBIRForms, and is never high confidence.
+- A restoration whose cited outage is not stored is saved, low confidence, with a note saying
+  which number to add by hand. The first live run had exactly that: 0031-SA cites 0031-SU.
+- Fixtures in `tests/fixtures/` are unpdf's text of seven real advisories plus a real scan
+  (the 0037 advisory rasterised, no text layer). `npm run test:parser` runs them.
 
 **Fragility, said plainly:** the list is hand-typed rich text. If the BIR redesigns the home page
 or moves the block, the watcher finds nothing. Every run will report how many items it saw, and

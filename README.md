@@ -11,6 +11,12 @@ Separate repo and separate Vercel project from kataxpayer.com. No git remote yet
 npm run dev                      # localhost:3000
 npm run build                    # run before saying something works
 node scripts/tokens-to-css.mjs   # regenerate app/tokens.css from design/tokens.json
+npm run test:parser              # the advisory parser against real BIR text
+
+# The watcher, by hand (one page view of bir.gov.ph):
+cd watcher && npm ci && npx playwright install chromium
+DRY_RUN=1 node watch.mjs                                  # print what it reads
+SYNC_URL=http://localhost:3000/api/advisories/sync CRON_SECRET=... node watch.mjs
 
 supabase start                   # local Supabase in Docker (ports 553xx, see below)
 supabase db reset                # rebuild the local database from supabase/migrations
@@ -32,6 +38,10 @@ single hand-run `schema.sql`: the spec asks for migrations, and the CLI tracks w
 - **`20261102000300_snapshots.sql`**: the 5-minute pg_cron job and history recompute.
 - **`20261103000100_report.sql`**: `submit_report`, the rate limit and the insert in one
   transaction.
+- **`20261103000200_parse_notes.sql`**: why the parser was unsure, for the admin only.
+
+`supabase/seed.sql` adds a local admin, `admin@kataxpayer.test`, on `db reset` only. Its magic
+links land in the local mail catcher at http://localhost:55324.
 
 How access works, since it is the thing most easily broken:
 
@@ -98,6 +108,26 @@ Local ports are 553xx, not Supabase's default 543xx, because another local proje
   `2x0000000000000000000000000000000AA` to see the 403. Do not run two `next dev` in this folder
   at once: they share `.next` and the first starts answering 404.
 
+## Advisories and the admin
+
+- **The watcher** is `.github/workflows/advisory-watch.yml`, every 30 minutes: headless Chromium
+  reads the BIR home page's list (`watcher/watch.mjs`) and posts it to `/api/advisories/sync`
+  with the `CRON_SECRET` bearer. A run that reads nothing fails red. Details in
+  `docs/bir-source.md`.
+- **The sync route** fetches only `https://*.bir.gov.ph` URLs, at most 15 new PDFs a run, one at
+  a time, parses them (`lib/advisory-parser.ts`) and saves them as pending. A download that fails
+  is not stored, so the next run tries again.
+- **`/admin` signs in by magic link** and only `ADMIN_EMAIL` is sent one; anyone else gets "Not
+  allowed" and no e-mail. The admin pages read and write as the signed-in user, not the service
+  role, so `public.admins` and RLS check every query too.
+- **Confirm refuses what would silently do nothing**: an outage with no system or start, a
+  restoration with no outage to close. Error and success messages travel as codes in the URL,
+  never as text, so a crafted link cannot put words on the page.
+- **Each button has its own server action** (`formAction`). A submit button's name and value did
+  not reach a single shared action, and every Confirm was quietly saved as a plain edit.
+- Locally, `supabase/config.toml` allows 30 auth e-mails an hour instead of 2, so sign-in can be
+  tested more than twice. Production's limit is set in the hosted project.
+
 ## Styling
 
 `design/tokens.json` is a copy of the published KaTaxpayer design system, the same file
@@ -123,4 +153,6 @@ Two things that bite:
 - **Phase 2 done** (locally): `/api/report`, `/api/status`, the report dialog, the live board,
   "What to do now" and the latest advisories. `content/what-to-do.md` awaits Emel's approval.
   The dialog links `/about`, which arrives in Phase 4.
-- Phases 3 to 5 are not started.
+- **Phase 3 done** (locally): parser and its tests, the sync route, the GitHub Actions watcher
+  (written, not yet run on GitHub: the repo has no remote), and `/admin`.
+- Phases 4 and 5 are not started.

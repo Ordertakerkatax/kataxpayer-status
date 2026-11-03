@@ -45,3 +45,17 @@ export function manilaDay(at: string | number | Date = Date.now()): string {
   const { y, mo, day } = manila(at);
   return `${y}-${String(mo + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 }
+
+/** For a `datetime-local` input: "2026-10-29T17:00", in Manila. */
+export function toManilaInput(iso: string | null): string {
+  if (!iso) return '';
+  const d = new Date(new Date(iso).getTime() + MANILA_OFFSET_MS);
+  return d.toISOString().slice(0, 16);
+}
+
+/** Back from a `datetime-local` input, read as Manila time; null when empty or invalid. */
+export function fromManilaInput(value: string | null | undefined): string | null {
+  if (!value || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(value)) return null;
+  const d = new Date(`${value}:00+08:00`);
+  return Number.isNaN(d.getTime()) ? null : d.toISOString();
+}
