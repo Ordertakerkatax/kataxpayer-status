@@ -177,21 +177,18 @@ Two things that bite:
   and `/admin`.
 - **Phase 4 done** (locally): `/history` with charts and CSV, `/advisories`, `/about`. Awaiting
   Emel: `content/privacy.md` wording and a privacy contact address.
-- **Phase 5, launch, part done:**
-  - Vercel project `kataxpayer-status` exists with its production variables; the domain
-    `status.kataxpayer.com` is attached and waits for an A record `status` → `76.76.21.21`
-    at Namecheap. Not deployed yet.
-  - The repo is public at github.com/Ordertakerkatax/kataxpayer-status, with the
-    `CRON_SECRET` secret and a `SYNC_URL` variable pointing at the vercel.app address until
-    DNS resolves (then delete the variable; the workflow falls back to the real domain).
-  - **The watcher workflow is disabled** until the site is deployed, so it does not fail
-    every 30 minutes. Enable it with `gh workflow enable advisory-watch.yml`.
-  - Blocked: no Supabase project yet. The org is at its two-free-project limit until
-    `ssj-dev` is paused. After that: create, `supabase link`, `supabase db push`, insert the
-    admin email into `public.admins`, and set the three Supabase variables in Vercel. Set the
-    Auth site URL and redirect URLs in the dashboard, not with `supabase config push`, which
-    would send the local settings.
-  - Waiting on a Cloudflare Turnstile widget: the site key, and `TURNSTILE_SECRET_KEY` added
-    to Vercel by Emel.
-  - The footer link on kataxpayer.com is in that repo's `lib/nav.ts` and builds; deploy it
-    once the board answers.
+- **Phase 5, launch, part done** (4 Nov 2026):
+  - **Live at https://kataxpayer-status.vercel.app.** Supabase project `kataxpayer-status`
+    (ref `izfctlgzwgqwibohhhcb`, Singapore) has every migration, the admin row, and the
+    5-minute snapshot job running. `scripts/anon-check.mjs` passes against it.
+  - `vercel.json` pins the Next.js framework. The project was made from the CLI with the
+    "Other" preset, which served the build as static files and 404'd every page.
+  - The repo is public at github.com/Ordertakerkatax/kataxpayer-status. The watcher runs
+    every 30 minutes; its first run read 103 items and stored 6 pending advisories.
+    `SYNC_URL` points at the vercel.app address; delete the variable once
+    `status.kataxpayer.com` resolves and the workflow falls back to it.
+  - Still to do: the A record `status` → `76.76.21.21` at Namecheap; a Cloudflare Turnstile
+    widget (until then `/api/report` answers 503 and nothing is saved); the Auth site URL and
+    redirect URLs in the Supabase dashboard (not `supabase config push`, which would send the
+    local settings); and probably custom SMTP, since Supabase's default sender only mails
+    org members. The footer link on kataxpayer.com builds and waits for the DNS.
